@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class adminPanel extends StatefulWidget {
   const adminPanel({Key? key}) : super(key: key);
@@ -10,6 +9,11 @@ class adminPanel extends StatefulWidget {
 }
 
 class _adminPanelState extends State<adminPanel> {
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController vendorController = TextEditingController();
+  final TextEditingController vendorLocationController =
+      TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold();
