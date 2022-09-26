@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class ProdCat2 extends StatefulWidget {
   const ProdCat2({Key? key}) : super(key: key);
 

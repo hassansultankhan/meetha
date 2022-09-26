@@ -13,6 +13,7 @@ class _adminPanelState extends State<adminPanel> {
   final TextEditingController vendorController = TextEditingController();
   final TextEditingController vendorLocationController =
       TextEditingController();
+  final TextEditingController priceController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
