@@ -1,6 +1,8 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:meetha/ProdCat1.dart';
+import 'package:meetha/ProdCat2.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -10,10 +12,14 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+   var screens =[
+      ProdCat1(), ProdCat2(),
+      ];
+    int SelectedCat = 1;
   @override
   Widget build(BuildContext context) {
     
-    List screens =[];
+   
     return Scaffold(
 
       appBar: AppBar(
@@ -23,9 +29,28 @@ class _MainScreenState extends State<MainScreen> {
         backgroundColor: (Color.fromARGB(255, 211, 164, 21)),
       ),
 
-      body: screens[],
+      body: screens[SelectedCat],
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color(0xfffece20),
+        selectedItemColor: Colors.brown[800],
+        unselectedItemColor: Colors.brown,
+        selectedFontSize: 20,
 
-      
+        currentIndex: SelectedCat,
+        onTap: (int i)=> BottomClick(i, context),
+
+        items:<BottomNavigationBarItem>[
+          
+          BottomNavigationBarItem(icon: Icon(Icons.food_bank), label: "Andrasay"),
+          BottomNavigationBarItem(icon: Icon(Icons.food_bank), label: "Falooda noodles"),
+        ],
+        ),
     );
   }
+    BottomClick(int index, BuildContext context){
+    setState(() {
+      SelectedCat = index;
+    });
+  }
+
 }
