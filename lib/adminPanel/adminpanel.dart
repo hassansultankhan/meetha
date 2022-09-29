@@ -69,13 +69,14 @@ class _adminPanelState extends State<adminPanel> {
                       final String vendorLocation = vendorController.text;
                       final double? price =
                           double.tryParse(priceController.text);
+                      final double? size = double.tryParse(sizeController.text);
                       if (price != null) {
                         await _products.add({
                           "title": title,
                           "vendor": vendor,
-                          "vendor Location": vendorLocationController,
-                          "price": priceController,
-                          "size": sizeController,
+                          "vendor Location": vendorLocation ,
+                          "price": price,
+                          "size": size,
                         });
 
                         titleController.text = "";
@@ -86,6 +87,7 @@ class _adminPanelState extends State<adminPanel> {
 
                         Navigator.of(context).pop();
                       }
+                      
                     },
                     child: const Text("Add product")),
               ],
@@ -104,19 +106,24 @@ class _adminPanelState extends State<adminPanel> {
     }
 
     await showModalBottomSheet(
+        isScrollControlled: true,
         context: context,
         builder: (BuildContext ctx) {
-          return Padding(
+          return 
+          Padding(
             padding: EdgeInsets.only(
                 top: 20,
                 left: 20,
                 right: 20,
-                bottom: MediaQuery.of(ctx).viewInsets.top + 20),
+                bottom: MediaQuery.of(ctx).viewInsets.top),
+            child: Container(
+              height: 650,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
+                  autofocus: true,
                   controller: titleController,
                   decoration: const InputDecoration(labelText: "Title"),
                 ),
@@ -150,8 +157,7 @@ class _adminPanelState extends State<adminPanel> {
                       final String vendor = vendorController.text;
                       final String vendorLocation =
                           vendorLocationController.text;
-                      final double? price =
-                          double.tryParse(priceController.text);
+                      final double? price = double.tryParse(priceController.text);
                       final double? size = double.tryParse(sizeController.text);
                       if (price != null) {
                         await _products.doc(documentSnapshot!.id).update({
@@ -171,6 +177,7 @@ class _adminPanelState extends State<adminPanel> {
                     },
                     child: Text("Update"))
               ],
+            ),
             ),
           );
         });
