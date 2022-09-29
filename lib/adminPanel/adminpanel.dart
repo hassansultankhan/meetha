@@ -73,7 +73,7 @@ class _adminPanelState extends State<adminPanel> {
                         await _products.add({
                           "title": title,
                           "vendor": vendor,
-                          "vendorLocation": vendorLocationController,
+                          "vendor Location": vendorLocationController,
                           "price": priceController,
                           "size": sizeController,
                         });
@@ -98,7 +98,7 @@ class _adminPanelState extends State<adminPanel> {
     if (documentSnapshot != null) {
       titleController.text = documentSnapshot['title'];
       vendorController.text = documentSnapshot['vendor'];
-      vendorLocationController.text = documentSnapshot['vendorLocation'];
+      vendorLocationController.text = documentSnapshot['vendor Location'];
       priceController.text = documentSnapshot['price'].toString();
       sizeController.text = documentSnapshot['size'].toString();
     }
@@ -111,7 +111,7 @@ class _adminPanelState extends State<adminPanel> {
                 top: 20,
                 left: 20,
                 right: 20,
-                bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
+                bottom: MediaQuery.of(ctx).viewInsets.top + 20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,7 +157,7 @@ class _adminPanelState extends State<adminPanel> {
                         await _products.doc(documentSnapshot!.id).update({
                           "title": title,
                           "vendor": vendor,
-                          "vendorlocation": vendorLocation,
+                          "vendor Location": vendorLocation,
                           "price": price,
                           "size": size,
                         });
@@ -203,11 +203,11 @@ class _adminPanelState extends State<adminPanel> {
                       margin: const EdgeInsets.all(10),
                       child: Column(
                         children: [
-                          Text(documentSnapshot['name']),
+                          Text(documentSnapshot['title']),
                           Text(documentSnapshot['vendor']),
-                          Text(documentSnapshot['vendorLocation']),
-                          Text(documentSnapshot['price']),
-                          Text(documentSnapshot['size']),
+                          Text(documentSnapshot['vendor Location']),
+                          Text(documentSnapshot['price'].toString()),
+                          Text(documentSnapshot['size'].toString()),
                           Row(
                             children: [
                               IconButton(

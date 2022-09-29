@@ -1,10 +1,9 @@
-class prodouct {
+class product{
   late String title;
-  late String vendor;
-  late String vendorLocation;
+  late String Vendor;
   late double price;
   late double? size;
-  dynamic image1;
+  dynamic imagePath;
 
-  prodouct(this.title, this.vendor, this.vendorLocation, this.price, this.size);
+  product(this.title, this.Vendor, this.price, this.size, this.imagePath);
 }
