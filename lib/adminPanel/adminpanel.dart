@@ -12,8 +12,7 @@ class adminPanel extends StatefulWidget {
 class _adminPanelState extends State<adminPanel> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController vendorController = TextEditingController();
-  final TextEditingController vendorLocationController =
-      TextEditingController();
+  final TextEditingController vendorLocationController =TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController sizeController = TextEditingController();
 
@@ -30,7 +29,7 @@ class _adminPanelState extends State<adminPanel> {
                 top: 20,
                 left: 20,
                 right: 20,
-                bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
+                bottom: MediaQuery.of(ctx).viewInsets.bottom),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -67,14 +66,13 @@ class _adminPanelState extends State<adminPanel> {
                       final String title = titleController.text;
                       final String vendor = vendorController.text;
                       final String vendorLocation = vendorController.text;
-                      final double? price =
-                          double.tryParse(priceController.text);
+                      final double? price =double.tryParse(priceController.text);
                       final double? size = double.tryParse(sizeController.text);
                       if (price != null) {
                         await _products.add({
                           "title": title,
                           "vendor": vendor,
-                          "vendor Location": vendorLocation ,
+                          "vendor Location": vendorLocation,
                           "price": price,
                           "size": size,
                         });
@@ -87,13 +85,13 @@ class _adminPanelState extends State<adminPanel> {
 
                         Navigator.of(context).pop();
                       }
-                      
                     },
                     child: const Text("Add product")),
               ],
             ),
           );
         });
+        //showmodalbottomsheet end
   }
 
   Future<void> _update([DocumentSnapshot? documentSnapshot]) async {
@@ -109,78 +107,81 @@ class _adminPanelState extends State<adminPanel> {
         isScrollControlled: true,
         context: context,
         builder: (BuildContext ctx) {
-          return 
-          Padding(
+          return Padding(
             padding: EdgeInsets.only(
                 top: 20,
                 left: 20,
                 right: 20,
-                bottom: MediaQuery.of(ctx).viewInsets.top),
+                bottom: MediaQuery.of(ctx).viewInsets.top+20),
             child: Container(
               height: 650,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  autofocus: true,
-                  controller: titleController,
-                  decoration: const InputDecoration(labelText: "Title"),
-                ),
-                TextField(
-                  controller: vendorController,
-                  decoration: const InputDecoration(labelText: "Vendor"),
-                ),
-                TextField(
-                  controller: vendorLocationController,
-                  decoration:
-                      const InputDecoration(labelText: "Vendor Location"),
-                ),
-                TextField(
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  controller: priceController,
-                  decoration: const InputDecoration(labelText: "Price"),
-                ),
-                TextField(
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  controller: sizeController,
-                  decoration: const InputDecoration(labelText: "Size"),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton(
-                    onPressed: () async {
-                      final String title = titleController.text;
-                      final String vendor = vendorController.text;
-                      final String vendorLocation =
-                          vendorLocationController.text;
-                      final double? price = double.tryParse(priceController.text);
-                      final double? size = double.tryParse(sizeController.text);
-                      if (price != null) {
-                        await _products.doc(documentSnapshot!.id).update({
-                          "title": title,
-                          "vendor": vendor,
-                          "vendor Location": vendorLocation,
-                          "price": price,
-                          "size": size,
-                        });
-                        titleController.text = "";
-                        vendorController.text = "";
-                        vendorLocationController.text = "";
-                        priceController.text = "";
-                        sizeController.text = "";
-                        Navigator.of(context).pop();
-                      }
-                    },
-                    child: Text("Update"))
-              ],
-            ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextField(
+                    autofocus: true,
+                    controller: titleController,
+                    decoration: const InputDecoration(labelText: "Title"),
+                  ),
+                  TextField(
+                    controller: vendorController,
+                    decoration: const InputDecoration(labelText: "Vendor"),
+                  ),
+                  TextField(
+                    controller: vendorLocationController,
+                    decoration:
+                        const InputDecoration(labelText: "Vendor Location"),
+                  ),
+                  TextField(
+                    keyboardType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    controller: priceController,
+                    decoration: const InputDecoration(labelText: "Price"),
+                  ),
+                  TextField(
+                    keyboardType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    controller: sizeController,
+                    decoration: const InputDecoration(labelText: "Size"),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                      onPressed: () async {
+                        final String title = titleController.text;
+                        final String vendor = vendorController.text;
+                        final String vendorLocation =
+                            vendorLocationController.text;
+                        final double? price =
+                            double.tryParse(priceController.text);
+                        final double? size =
+                            double.tryParse(sizeController.text);
+                        if (price != null) {
+                          await _products.doc(documentSnapshot!.id).update({
+                            "title": title,
+                            "vendor": vendor,
+                            "vendor Location": vendorLocation,
+                            "price": price,
+                            "size": size,
+                          });
+                          titleController.text = "";
+                          vendorController.text = "";
+                          vendorLocationController.text = "";
+                          priceController.text = "";
+                          sizeController.text = "";
+                          Navigator.of(context).pop();
+                        }
+                      },
+                      child: Text("Update"))
+                ],
+              ),
             ),
           );
         });
+        //  showmodalbottomsheet end
+
   }
 
   Future<void> _delete(String productid) async {
