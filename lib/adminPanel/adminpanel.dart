@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:meetha/productClass.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
 
 class adminPanel extends StatefulWidget {
   const adminPanel({Key? key}) : super(key: key);
@@ -15,6 +19,9 @@ class _adminPanelState extends State<adminPanel> {
   final TextEditingController vendorLocationController =TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController sizeController = TextEditingController();
+
+  String imageUrl = '';
+  GlobalKey<FormState> key = GlobalKey();
 
   final CollectionReference _products =
       FirebaseFirestore.instance.collection('Details');
@@ -34,6 +41,7 @@ class _adminPanelState extends State<adminPanel> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 TextField(
+                  key: key,
                   controller: titleController,
                   decoration: const InputDecoration(labelText: 'TITLE'),
                 ),
@@ -61,6 +69,41 @@ class _adminPanelState extends State<adminPanel> {
                 const SizedBox(
                   height: 10,
                 ),
+                 
+                 IconButton(onPressed: ()async{
+                   ImagePicker imagePicker = ImagePicker();
+                   XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
+                   print('$file?.path');
+
+                   if (file == null) return;
+                   
+                   String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+                   //not used
+
+                   Reference referenceRoot = FirebaseStorage.instance.ref();
+                   Reference referenceDir = referenceRoot.child('images');
+                   Reference referenceImage2Upload = referenceDir.child('$titleController');
+
+                   try{
+                    await referenceImage2Upload.putFile(File(file.path));
+                    imageUrl= await referenceImage2Upload.getDownloadURL();
+                   }catch(error){
+                    print('problem with fetching imageUrl');
+                   }
+
+                   // done till here
+
+
+                 },
+                 icon: Icon(Icons.camera),
+                 ),
+                 //gallery addition for picture
+              
+                 const SizedBox(
+                  height: 10,
+                ),
+
+
                 ElevatedButton(
                     onPressed: () async {
                       final String title = titleController.text;
@@ -68,6 +111,8 @@ class _adminPanelState extends State<adminPanel> {
                       final String vendorLocation = vendorController.text;
                       final double? price =double.tryParse(priceController.text);
                       final double? size = double.tryParse(sizeController.text);
+                      
+                      
                       if (price != null) {
                         await _products.add({
                           "title": title,
