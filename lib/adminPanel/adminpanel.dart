@@ -20,14 +20,17 @@ class _adminPanelState extends State<adminPanel> {
   final TextEditingController priceController = TextEditingController();
   final TextEditingController sizeController = TextEditingController();
 
+
   String imageUrl = '';
   // GlobalKey<TextField> key = GlobalKey();
-
+  bool loadingStatus = false;
   final CollectionReference _products =
       FirebaseFirestore.instance.collection('Details');
 
   Future<void> _create([DocumentSnapshot? documentSnapshot]) async {
+    loadingStatus = false;
     await showModalBottomSheet(
+
         isScrollControlled: true,
         context: context,
         builder: (BuildContext ctx) {
@@ -71,68 +74,20 @@ class _adminPanelState extends State<adminPanel> {
                 ),
                  
                  IconButton(onPressed: _ImageLoad,
-                 icon: _ImageLoad()?
-                 Container(height: 10, width: 10,
-                 padding:  EdgeInsets.all(2),
-                 child: const CircularProgressIndicator(
-                 color: Colors.white,
-                 strokeWidth: 3,
+                 icon: Icon(Icons.camera),
                  ),
-                 )
-                 :
-                 Icon(Icons.camera),
-                 
-                 ),
-
-                 
-                 
-                 
-                 //gallery addition for picture
               
                  const SizedBox(
-                  height: 10,
+                  height: 10
                 ),
 
 
                 ElevatedButton(
-                    onPressed: () async {
-
-                      if(imageUrl.isEmpty){
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please add a Picture')));
-                        return;
-                      }
-
-                      // if (key.currentState!.validate()){
-
-                      final String title = titleController.text;
-                      final String vendor = vendorController.text;
-                      final String vendorLocation = vendorController.text;
-                      final double? price =double.tryParse(priceController.text);
-                      final double? size = double.tryParse(sizeController.text);
-
-                  
-                      if (price != null) {
-                        await _products.add({
-                          "title": title,
-                          "vendor": vendor,
-                          "vendor Location": vendorLocation,
-                          "price": price,
-                          "size": size,
-                          "imageUrl": imageUrl,
-                        });
-
-                        titleController.text = "";
-                        vendorController.text = "";
-                        vendorLocationController.text = "";
-                        priceController.text = "";
-                        sizeController.text = "";
-                        imageUrl = "";
-
-                        Navigator.of(context).pop();
-                      // }
-                      }
-                    },
-                    child: const Text("Add product")),
+                    onPressed: loadingStatus? ()=> submitData() : null, 
+                    child: const Text("Add product"),
+                    
+                    
+                    ),
               ],
             ),
           );
@@ -295,12 +250,17 @@ class _adminPanelState extends State<adminPanel> {
     );
   }
 //function to load image on storage
-  _ImageLoad()async{
+   _ImageLoad()async{
                    ImagePicker imagePicker = ImagePicker();
                    XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
                    print('$file?.path');
 
-                   if (file == null) return;
+                   if (file == null) {
+                   setState(() {
+                     loadingStatus = false;
+                   });
+                   return;
+                   }
                    
                    String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
                    //not used
@@ -312,11 +272,53 @@ class _adminPanelState extends State<adminPanel> {
                    try{
                     await referenceImage2Upload.putFile(File(file.path));
                     imageUrl= await referenceImage2Upload.getDownloadURL();
-                    return true;
+                    if(imageUrl != null){
+                    setState(() {
+                      loadingStatus = true;
+                    });}
                    }catch(error){
                     print('problem with fetching imageUrl');
+                    return false;
                    }
+                  //  setState(() {
+                  //    loadingStatus = true;
+                  //  });
 
 
                  }
+
+  submitData()async{
+                      if(imageUrl.isEmpty){
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please add a Picture')));
+                        return;
+                      }
+                      // if (key.currentState!.validate()){
+
+                      final String title = titleController.text;
+                      final String vendor = vendorController.text;
+                      final String vendorLocation = vendorController.text;
+                      final double? price =double.tryParse(priceController.text);
+                      final double? size = double.tryParse(sizeController.text);
+
+                  
+                      if (price != null && imageUrl != null ) {
+                        await _products.add({
+                          "title": title,
+                          "vendor": vendor,
+                          "vendor Location": vendorLocation,
+                          "price": price,
+                          "size": size,
+                          "imageUrl": imageUrl,
+                        });
+
+                        titleController.text = "";
+                        vendorController.text = "";
+                        vendorLocationController.text = "";
+                        priceController.text = "";
+                        sizeController.text = "";
+                        imageUrl = "";
+
+                        Navigator.of(context).pop();
+                     }
+  }
 }
