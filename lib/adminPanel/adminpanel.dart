@@ -21,7 +21,7 @@ class _adminPanelState extends State<adminPanel> {
   final TextEditingController sizeController = TextEditingController();
 
   String imageUrl = '';
-  GlobalKey<FormState> key = GlobalKey();
+  // GlobalKey<TextField> key = GlobalKey();
 
   final CollectionReference _products =
       FirebaseFirestore.instance.collection('Details');
@@ -41,7 +41,7 @@ class _adminPanelState extends State<adminPanel> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 TextField(
-                  key: key,
+                  // key: key,
                   controller: titleController,
                   decoration: const InputDecoration(labelText: 'TITLE'),
                 ),
@@ -70,33 +70,23 @@ class _adminPanelState extends State<adminPanel> {
                   height: 10,
                 ),
                  
-                 IconButton(onPressed: ()async{
-                   ImagePicker imagePicker = ImagePicker();
-                   XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
-                   print('$file?.path');
-
-                   if (file == null) return;
-                   
-                   String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
-                   //not used
-
-                   Reference referenceRoot = FirebaseStorage.instance.ref();
-                   Reference referenceDir = referenceRoot.child('images');
-                   Reference referenceImage2Upload = referenceDir.child('$titleController');
-
-                   try{
-                    await referenceImage2Upload.putFile(File(file.path));
-                    imageUrl= await referenceImage2Upload.getDownloadURL();
-                   }catch(error){
-                    print('problem with fetching imageUrl');
-                   }
-
-                   // done till here
-
-
-                 },
-                 icon: Icon(Icons.camera),
+                 IconButton(onPressed: _ImageLoad,
+                 icon: _ImageLoad()?
+                 Container(height: 10, width: 10,
+                 padding:  EdgeInsets.all(2),
+                 child: const CircularProgressIndicator(
+                 color: Colors.white,
+                 strokeWidth: 3,
                  ),
+                 )
+                 :
+                 Icon(Icons.camera),
+                 
+                 ),
+
+                 
+                 
+                 
                  //gallery addition for picture
               
                  const SizedBox(
@@ -106,13 +96,21 @@ class _adminPanelState extends State<adminPanel> {
 
                 ElevatedButton(
                     onPressed: () async {
+
+                      if(imageUrl.isEmpty){
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please add a Picture')));
+                        return;
+                      }
+
+                      // if (key.currentState!.validate()){
+
                       final String title = titleController.text;
                       final String vendor = vendorController.text;
                       final String vendorLocation = vendorController.text;
                       final double? price =double.tryParse(priceController.text);
                       final double? size = double.tryParse(sizeController.text);
-                      
-                      
+
+                  
                       if (price != null) {
                         await _products.add({
                           "title": title,
@@ -120,6 +118,7 @@ class _adminPanelState extends State<adminPanel> {
                           "vendor Location": vendorLocation,
                           "price": price,
                           "size": size,
+                          "imageUrl": imageUrl,
                         });
 
                         titleController.text = "";
@@ -127,8 +126,10 @@ class _adminPanelState extends State<adminPanel> {
                         vendorLocationController.text = "";
                         priceController.text = "";
                         sizeController.text = "";
+                        imageUrl = "";
 
                         Navigator.of(context).pop();
+                      // }
                       }
                     },
                     child: const Text("Add product")),
@@ -293,4 +294,29 @@ class _adminPanelState extends State<adminPanel> {
       ),
     );
   }
+//function to load image on storage
+  _ImageLoad()async{
+                   ImagePicker imagePicker = ImagePicker();
+                   XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
+                   print('$file?.path');
+
+                   if (file == null) return;
+                   
+                   String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+                   //not used
+
+                   Reference referenceRoot = FirebaseStorage.instance.ref();
+                   Reference referenceDir = referenceRoot.child('images');
+                   Reference referenceImage2Upload = referenceDir.child('${titleController.text}');
+
+                   try{
+                    await referenceImage2Upload.putFile(File(file.path));
+                    imageUrl= await referenceImage2Upload.getDownloadURL();
+                    return true;
+                   }catch(error){
+                    print('problem with fetching imageUrl');
+                   }
+
+
+                 }
 }
