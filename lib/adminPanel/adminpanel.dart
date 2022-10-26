@@ -22,6 +22,7 @@ class _adminPanelState extends State<adminPanel> {
 
 
   String imageUrl = '';
+  bool cameraButtonPressed = false;
   // GlobalKey<TextField> key = GlobalKey();
   bool loadingStatus = false;
   final CollectionReference _products =
@@ -43,6 +44,8 @@ class _adminPanelState extends State<adminPanel> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                const SizedBox(height: 20,),
+                const Text("Add new product", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20)),
                 TextField(
                   // key: key,
                   controller: titleController,
@@ -72,11 +75,30 @@ class _adminPanelState extends State<adminPanel> {
                 const SizedBox(
                   height: 10,
                 ),
-                 
-                 IconButton(onPressed: _ImageLoad,
-                 icon: Icon(Icons.camera),
+                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                  
+                 IconButton(onPressed:_ImageLoad,
+
+                 icon: const Icon(Icons.camera_alt,
+                 size: 30,),
                  ),
-              
+                cameraButtonPressed?
+                 SizedBox(
+                  child: Container(
+                    height: 30,width: 30,
+                    child: cameraButtonPressed?
+                    const CircularProgressIndicator(
+                      strokeWidth: 7,
+                    )
+                    :
+                    null
+                  ),
+                 ): const SizedBox(height: 0,width:0),
+                  ]
+                 ),
+
                  const SizedBox(
                   height: 10
                 ),
@@ -251,9 +273,14 @@ class _adminPanelState extends State<adminPanel> {
   }
 //function to load image on storage
    _ImageLoad()async{
+                   WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+                   // to remove focus from text field
                    ImagePicker imagePicker = ImagePicker();
                    XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
                    print('$file?.path');
+                   setState(() {
+                     cameraButtonPressed = true;
+                   });
 
                    if (file == null) {
                    setState(() {
@@ -273,16 +300,18 @@ class _adminPanelState extends State<adminPanel> {
                     await referenceImage2Upload.putFile(File(file.path));
                     imageUrl= await referenceImage2Upload.getDownloadURL();
                     if(imageUrl != null){
+                  
                     setState(() {
-                      loadingStatus = true;
+                       cameraButtonPressed = false;
+                     // loadingStatus = true;
+                      // return;
+                      print("working");
+                    
                     });}
                    }catch(error){
                     print('problem with fetching imageUrl');
                     return false;
                    }
-                  //  setState(() {
-                  //    loadingStatus = true;
-                  //  });
 
 
                  }
