@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-
 class adminPanel extends StatefulWidget {
   const adminPanel({Key? key}) : super(key: key);
 
@@ -16,10 +15,10 @@ class adminPanel extends StatefulWidget {
 class _adminPanelState extends State<adminPanel> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController vendorController = TextEditingController();
-  final TextEditingController vendorLocationController =TextEditingController();
+  final TextEditingController vendorLocationController =
+      TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController sizeController = TextEditingController();
-
 
   String imageUrl = '';
   bool cameraButtonPressed = false;
@@ -31,7 +30,6 @@ class _adminPanelState extends State<adminPanel> {
   Future<void> _create([DocumentSnapshot? documentSnapshot]) async {
     loadingStatus = false;
     await showModalBottomSheet(
-
         isScrollControlled: true,
         context: context,
         builder: (BuildContext ctx) {
@@ -44,8 +42,12 @@ class _adminPanelState extends State<adminPanel> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(height: 20,),
-                const Text("Add new product", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20)),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Text("Add new product",
+                    style:
+                        TextStyle(fontWeight: FontWeight.w900, fontSize: 20)),
                 TextField(
                   // key: key,
                   controller: titleController,
@@ -75,46 +77,38 @@ class _adminPanelState extends State<adminPanel> {
                 const SizedBox(
                   height: 10,
                 ),
-                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                  
-                 IconButton(onPressed:_ImageLoad,
-
-                 icon: const Icon(Icons.camera_alt,
-                 size: 30,),
-                 ),
-                cameraButtonPressed?
-                 SizedBox(
-                  child: Container(
-                    height: 30,width: 30,
-                    child: cameraButtonPressed?
-                    const CircularProgressIndicator(
-                      strokeWidth: 7,
-                    )
-                    :
-                    null
-                  ),
-                 ): const SizedBox(height: 0,width:0),
-                  ]
-                 ),
-
-                 const SizedBox(
-                  height: 10
-                ),
-
-
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  IconButton(
+                      icon: const Icon(
+                        Icons.camera_alt,
+                        size: 30,
+                      ),
+                      onPressed: () async {
+                        await _ImageLoad()
+                            .then((_camerabuttonpressed) => _camerabuttonpressed
+                                ? SizedBox(
+                                    child: Container(
+                                        height: 30,
+                                        width: 30,
+                                        child: cameraButtonPressed
+                                            ? const CircularProgressIndicator(
+                                                strokeWidth: 7,
+                                              )
+                                            : null),
+                                  )
+                                : const SizedBox(height: 0, width: 0));
+                      })
+                ]),
+                const SizedBox(height: 10),
                 ElevatedButton(
-                    onPressed: loadingStatus? ()=> submitData() : null, 
-                    child: const Text("Add product"),
-                    
-                    
-                    ),
+                  onPressed: loadingStatus ? () => submitData() : null,
+                  child: const Text("Add product"),
+                ),
               ],
             ),
           );
         });
-        //showmodalbottomsheet end
+    //showmodalbottomsheet end
   }
 
   Future<void> _update([DocumentSnapshot? documentSnapshot]) async {
@@ -135,7 +129,7 @@ class _adminPanelState extends State<adminPanel> {
                 top: 20,
                 left: 20,
                 right: 20,
-                bottom: MediaQuery.of(ctx).viewInsets.top+20),
+                bottom: MediaQuery.of(ctx).viewInsets.top + 20),
             child: Container(
               height: 650,
               child: Column(
@@ -203,8 +197,7 @@ class _adminPanelState extends State<adminPanel> {
             ),
           );
         });
-        //  showmodalbottomsheet end
-
+    //  showmodalbottomsheet end
   }
 
   Future<void> _delete(String productid) async {
@@ -271,83 +264,84 @@ class _adminPanelState extends State<adminPanel> {
       ),
     );
   }
+
 //function to load image on storage
-   _ImageLoad()async{
-                   WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
-                   // to remove focus from text field
-                   ImagePicker imagePicker = ImagePicker();
-                   XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
-                   print('$file?.path');
-                   setState(() {
-                     cameraButtonPressed = true;
-                   });
+  Future<bool> _ImageLoad() async {
+    // WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+    // to remove focus from text field
+    ImagePicker imagePicker = ImagePicker();
+    XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
+    // print('$file?.path');
+    // setState(() {
+    //   cameraButtonPressed = true;
+    // });
 
-                   if (file == null) {
-                   setState(() {
-                     loadingStatus = false;
-                   });
-                   return;
-                   }
-                   
-                   String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
-                   //not used
+    if (file == null) {
+      // setState(() {
+      //   loadingStatus = false;
+      // });
+      return true;
+    } else {
+      // String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+      //not used
 
-                   Reference referenceRoot = FirebaseStorage.instance.ref();
-                   Reference referenceDir = referenceRoot.child('images');
-                   Reference referenceImage2Upload = referenceDir.child('${titleController.text}');
+      Reference referenceRoot = FirebaseStorage.instance.ref();
+      Reference referenceDir = referenceRoot.child('images');
+      Reference referenceImage2Upload =
+          referenceDir.child('${titleController.text}');
 
-                   try{
-                    await referenceImage2Upload.putFile(File(file.path));
-                    imageUrl= await referenceImage2Upload.getDownloadURL();
-                    if(imageUrl != null){
-                  
-                    setState(() {
-                       cameraButtonPressed = false;
-                     // loadingStatus = true;
-                      // return;
-                      print("working");
-                    
-                    });}
-                   }catch(error){
-                    print('problem with fetching imageUrl');
-                    return false;
-                   }
+      try {
+        await referenceImage2Upload.putFile(File(file.path));
+        imageUrl = await referenceImage2Upload.getDownloadURL();
+        if (imageUrl != null) {
+          // print("working");
+          return true;
+          // setState(() {
+          //   cameraButtonPressed = false;
+          //   // loadingStatus = true;
+          //   // return;
+          //   print("working");
+          // });
+        }
+      } catch (error) {
+        print('problem with fetching imageUrl');
+        return false;
+      }
+    }
+  }
 
+  submitData() async {
+    if (imageUrl.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Please add a Picture')));
+      return;
+    }
+    // if (key.currentState!.validate()){
 
-                 }
+    final String title = titleController.text;
+    final String vendor = vendorController.text;
+    final String vendorLocation = vendorController.text;
+    final double? price = double.tryParse(priceController.text);
+    final double? size = double.tryParse(sizeController.text);
 
-  submitData()async{
-                      if(imageUrl.isEmpty){
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please add a Picture')));
-                        return;
-                      }
-                      // if (key.currentState!.validate()){
+    if (price != null && imageUrl != null) {
+      await _products.add({
+        "title": title,
+        "vendor": vendor,
+        "vendor Location": vendorLocation,
+        "price": price,
+        "size": size,
+        "imageUrl": imageUrl,
+      });
 
-                      final String title = titleController.text;
-                      final String vendor = vendorController.text;
-                      final String vendorLocation = vendorController.text;
-                      final double? price =double.tryParse(priceController.text);
-                      final double? size = double.tryParse(sizeController.text);
+      titleController.text = "";
+      vendorController.text = "";
+      vendorLocationController.text = "";
+      priceController.text = "";
+      sizeController.text = "";
+      imageUrl = "";
 
-                  
-                      if (price != null && imageUrl != null ) {
-                        await _products.add({
-                          "title": title,
-                          "vendor": vendor,
-                          "vendor Location": vendorLocation,
-                          "price": price,
-                          "size": size,
-                          "imageUrl": imageUrl,
-                        });
-
-                        titleController.text = "";
-                        vendorController.text = "";
-                        vendorLocationController.text = "";
-                        priceController.text = "";
-                        sizeController.text = "";
-                        imageUrl = "";
-
-                        Navigator.of(context).pop();
-                     }
+      Navigator.of(context).pop();
+    }
   }
 }
