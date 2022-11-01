@@ -84,7 +84,7 @@ class _adminPanelState extends State<adminPanel> {
                         size: 30,
                       ),
                       onPressed: () async {
-                        await _ImageLoad()
+                        await  _ImageLoad()
                             .then((_camerabuttonpressed) => _camerabuttonpressed
                                 ? SizedBox(
                                     child: Container(
@@ -96,7 +96,8 @@ class _adminPanelState extends State<adminPanel> {
                                               )
                                             : null),
                                   )
-                                : const SizedBox(height: 0, width: 0));
+                                : const SizedBox(height: 0, width: 0, 
+                                child: DecoratedBox(decoration: BoxDecoration(color: Colors.amber)),));
                       })
                 ]),
                 const SizedBox(height: 10),
@@ -267,21 +268,22 @@ class _adminPanelState extends State<adminPanel> {
 
 //function to load image on storage
   Future<bool> _ImageLoad() async {
-    // WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+    WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
     // to remove focus from text field
     ImagePicker imagePicker = ImagePicker();
     XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
-    // print('$file?.path');
-    // setState(() {
-    //   cameraButtonPressed = true;
-    // });
+    print('$file?.path');
+    setState(() {
+      cameraButtonPressed = true;
+    });
 
     if (file == null) {
-      // setState(() {
-      //   loadingStatus = false;
-      // });
-      return true;
-    } else {
+      setState(() {
+        loadingStatus = false;
+      });
+      return loadingStatus;
+    } 
+    else {
       // String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
       //not used
 
@@ -294,16 +296,20 @@ class _adminPanelState extends State<adminPanel> {
         await referenceImage2Upload.putFile(File(file.path));
         imageUrl = await referenceImage2Upload.getDownloadURL();
         if (imageUrl != null) {
-          // print("working");
-          return true;
-          // setState(() {
-          //   cameraButtonPressed = false;
-          //   // loadingStatus = true;
-          //   // return;
-          //   print("working");
-          // });
-        }
-      } catch (error) {
+          print("working");
+          
+          setState(() {
+            cameraButtonPressed = false;
+            loadingStatus = true;
+           
+            print("working");
+          });
+          }
+          return cameraButtonPressed;
+          }
+
+
+      catch (error) {
         print('problem with fetching imageUrl');
         return false;
       }
