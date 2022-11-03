@@ -22,6 +22,7 @@ class _adminPanelState extends State<adminPanel> {
 
   String imageUrl = '';
   bool cameraButtonPressed = false;
+  bool test = false;
   // GlobalKey<TextField> key = GlobalKey();
   bool loadingStatus = false;
   final CollectionReference _products =
@@ -77,29 +78,59 @@ class _adminPanelState extends State<adminPanel> {
                 const SizedBox(
                   height: 10,
                 ),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                
                   IconButton(
-                      icon: const Icon(
+                      icon: 
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                      
+                      const Icon(
+
                         Icons.camera_alt,
-                        size: 30,
+                        size: 30),
+
+
+                        Spacer(),
+                         test?
+                         Container(
+                        child: const SizedBox(
+                          height: 30, width: 30,
+                          
+                          child:  CircularProgressIndicator(),
+                        ),
+                      )
+                      :
+                      Container() 
+                      ]
                       ),
-                      onPressed: () async {
-                        await  _ImageLoad()
-                            .then((_camerabuttonpressed) => _camerabuttonpressed
-                                ? SizedBox(
-                                    child: Container(
-                                        height: 30,
-                                        width: 30,
-                                        child: cameraButtonPressed
-                                            ? const CircularProgressIndicator(
-                                                strokeWidth: 7,
-                                              )
-                                            : null),
-                                  )
-                                : const SizedBox(height: 0, width: 0, 
-                                child: DecoratedBox(decoration: BoxDecoration(color: Colors.amber)),));
-                      })
-                ]),
+                        
+
+                      onPressed: () async{ 
+                        setState(() {
+                          test = true;
+                        });
+                        setState(() {
+                          
+                        });
+                        await _ImageLoad();
+                        setState(() {
+                          test = false;
+                        });
+                  
+                      }
+                      
+                      // async { await  _ImageLoad()
+                      //       .then((_camerabuttonpressed) => _camerabuttonpressed
+                      //           ? const SizedBox(
+                      //               child: CircularProgressIndicator(
+                      //                           strokeWidth: 7,
+                      //                         ))
+                      //                       : null);
+                                
+                               
+                      // }
+                    
+    
+                ),
                 const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: loadingStatus ? () => submitData() : null,
@@ -268,6 +299,8 @@ class _adminPanelState extends State<adminPanel> {
 
 //function to load image on storage
   Future<bool> _ImageLoad() async {
+
+    
     WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
     // to remove focus from text field
     ImagePicker imagePicker = ImagePicker();
@@ -296,13 +329,13 @@ class _adminPanelState extends State<adminPanel> {
         await referenceImage2Upload.putFile(File(file.path));
         imageUrl = await referenceImage2Upload.getDownloadURL();
         if (imageUrl != null) {
-          print("working");
+          print("working1");
           
           setState(() {
             cameraButtonPressed = false;
             loadingStatus = true;
            
-            print("working");
+            print("working2");
           });
           }
           return cameraButtonPressed;
