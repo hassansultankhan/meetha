@@ -81,7 +81,7 @@ class _adminPanelState extends State<adminPanel> {
                 
                   IconButton(
                       icon: 
-                      Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                       
                       const Icon(
 
