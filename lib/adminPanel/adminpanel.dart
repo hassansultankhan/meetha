@@ -10,6 +10,7 @@ class adminPanel extends StatefulWidget {
 
   @override
   State<adminPanel> createState() => _adminPanelState();
+ 
 }
 
 class _adminPanelState extends State<adminPanel> {
@@ -22,126 +23,136 @@ class _adminPanelState extends State<adminPanel> {
 
   String imageUrl = '';
   bool cameraButtonPressed = false;
-  bool test = false;
-  // GlobalKey<TextField> key = GlobalKey();
+ 
   bool loadingStatus = false;
   final CollectionReference _products =
       FirebaseFirestore.instance.collection('Details');
 
-  Future<void> _create([DocumentSnapshot? documentSnapshot]) async {
-    loadingStatus = false;
-    await showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (BuildContext ctx) {
-          return Padding(
-            padding: EdgeInsets.only(
-                top: 20,
-                left: 20,
-                right: 20,
-                bottom: MediaQuery.of(ctx).viewInsets.bottom),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text("Add new product",
-                    style:
-                        TextStyle(fontWeight: FontWeight.w900, fontSize: 20)),
-                TextField(
-                  // key: key,
-                  controller: titleController,
-                  decoration: const InputDecoration(labelText: 'TITLE'),
-                ),
-                TextField(
-                  controller: vendorController,
-                  decoration: const InputDecoration(labelText: 'VENDOR'),
-                ),
-                TextField(
-                  controller: vendorLocationController,
-                  decoration:
-                      const InputDecoration(labelText: 'VENDOR LOCATION'),
-                ),
-                TextField(
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  controller: priceController,
-                  decoration: const InputDecoration(labelText: 'PRICE'),
-                ),
-                TextField(
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  controller: sizeController,
-                  decoration: const InputDecoration(labelText: 'SIZE'),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                
-                  IconButton(
-                      icon: 
-                      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      
-                      const Icon(
-
-                        Icons.camera_alt,
-                        size: 30),
 
 
-                        Spacer(),
-                         test?
-                         Container(
-                        child: const SizedBox(
-                          height: 30, width: 30,
+
+
+
+                        Future<void> _create([DocumentSnapshot? documentSnapshot]) async {
                           
-                          child:  CircularProgressIndicator(),
-                        ),
-                      )
-                      :
-                      Container() 
-                      ]
-                      ),
-                        
-
-                      onPressed: () async{ 
-                        setState(() {
-                          test = true;
-                        });
-                        setState(() {
-                          
-                        });
-                        await _ImageLoad();
-                        setState(() {
-                          test = false;
-                        });
-                  
-                      }
-                      
-                      // async { await  _ImageLoad()
-                      //       .then((_camerabuttonpressed) => _camerabuttonpressed
-                      //           ? const SizedBox(
-                      //               child: CircularProgressIndicator(
-                      //                           strokeWidth: 7,
-                      //                         ))
-                      //                       : null);
+                          await showModalBottomSheet(
+                            
+                              isScrollControlled: true,
+                              context: context,
+                              builder: (BuildContext ctx) {
+                                return StatefulBuilder(
+                                  builder: (BuildContext context, StateSetter ModalSheetSetState) {
+                                  return 
                                 
-                               
-                      // }
-                    
-    
-                ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: loadingStatus ? () => submitData() : null,
-                  child: const Text("Add product"),
-                ),
-              ],
-            ),
-          );
-        });
-    //showmodalbottomsheet end
-  }
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 20,
+                                      left: 20,
+                                      right: 20,
+                                      bottom: MediaQuery.of(ctx).viewInsets.bottom),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      const Text("Add new product",
+                                          style:
+                                              TextStyle(fontWeight: FontWeight.w900, fontSize: 20)),
+                                      TextField(
+                                        controller: titleController,
+                                        decoration: const InputDecoration(labelText: 'TITLE'),
+                                      ),
+                                      TextField(
+                                        controller: vendorController,
+                                        decoration: const InputDecoration(labelText: 'VENDOR'),
+                                      ),
+                                      TextField(
+                                        controller: vendorLocationController,
+                                        decoration:
+                                            const InputDecoration(labelText: 'VENDOR LOCATION'),
+                                      ),
+                                      TextField(
+                                        keyboardType:
+                                            const TextInputType.numberWithOptions(decimal: true),
+                                        controller: priceController,
+                                        decoration: const InputDecoration(labelText: 'PRICE'),
+                                      ),
+                                      TextField(
+                                        keyboardType:
+                                            const TextInputType.numberWithOptions(decimal: true),
+                                        controller: sizeController,
+                                        decoration: const InputDecoration(labelText: 'SIZE'),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      // Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                                      Container(height: 50, width: 50,
+                                      child: cameraButtonPressed?
+                                      const CircularProgressIndicator(
+                                        strokeWidth: 6,
+                                        
+                                      ):
+                                          // const SizedBox(
+                                          //   height: 20,width: 20,
+                                          //   child: DecoratedBox(decoration: BoxDecoration(
+                                          //     color: Colors.amberAccent,
+                                          //   )
+                                          //   ),
+                                          // )
+                                                                            
+                                      IconButton(
+                                            icon:                       
+                                            const Icon(                                            
+                                              Icons.camera_alt,
+                                              size: 30),
+
+                                              onPressed: () async{ 
+                                              ModalSheetSetState((){
+                                                cameraButtonPressed = true;
+                                              });
+                                              await _ImageLoad();    
+                                              ModalSheetSetState((){
+                                                cameraButtonPressed = false;
+                                                loadingStatus = true;
+                                              });
+                                            },
+                                        ),
+                                        // Container(
+                                        //   height: 20, width: 20,
+                                        //   child: cameraButtonPressed?
+                                        //   const CircularProgressIndicator():
+                                        //   const SizedBox(
+                                        //     height: 20,width: 20,
+                                        //     child: DecoratedBox(decoration: BoxDecoration(
+                                        //       color: Colors.amberAccent,
+                                        //     )),
+                                        //   )
+                                        // )
+                                      ),
+                                  
+                                       
+                        
+                                      
+                                      const SizedBox(height: 10),
+                                      ElevatedButton(
+                                        onPressed: loadingStatus ? () => submitData() : null,
+                                        child: const Text("Add product"),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                                  },
+                                );
+                              });
+                          //showmodalbottomsheet end
+                        }
+
+
+
+
+
 
   Future<void> _update([DocumentSnapshot? documentSnapshot]) async {
     if (documentSnapshot != null) {
@@ -298,7 +309,8 @@ class _adminPanelState extends State<adminPanel> {
   }
 
 //function to load image on storage
-  Future<bool> _ImageLoad() async {
+  // Future<bool>
+  _ImageLoad() async {
 
     
     WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
@@ -306,15 +318,15 @@ class _adminPanelState extends State<adminPanel> {
     ImagePicker imagePicker = ImagePicker();
     XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
     print('$file?.path');
-    setState(() {
-      cameraButtonPressed = true;
-    });
+    // setState(() {
+    //   cameraButtonPressed = true;
+    // });
 
     if (file == null) {
       setState(() {
         loadingStatus = false;
       });
-      return loadingStatus;
+      // return loadingStatus;
     } 
     else {
       // String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
@@ -322,29 +334,33 @@ class _adminPanelState extends State<adminPanel> {
 
       Reference referenceRoot = FirebaseStorage.instance.ref();
       Reference referenceDir = referenceRoot.child('images');
-      Reference referenceImage2Upload =
-          referenceDir.child('${titleController.text}');
+      Reference referenceImage2Upload = referenceDir.child('${titleController.text}');
 
       try {
         await referenceImage2Upload.putFile(File(file.path));
         imageUrl = await referenceImage2Upload.getDownloadURL();
         if (imageUrl != null) {
-          print("working1");
-          
+
           setState(() {
             cameraButtonPressed = false;
             loadingStatus = true;
-           
-            print("working2");
+             print("working");
+
           });
           }
-          return cameraButtonPressed;
+          // return ;
+          setState(() {
+            loadingStatus =false;
+          });
           }
 
 
       catch (error) {
         print('problem with fetching imageUrl');
-        return false;
+        setState(() {
+            loadingStatus =false;
+          });
+        // return false;
       }
     }
   }
@@ -355,7 +371,6 @@ class _adminPanelState extends State<adminPanel> {
           .showSnackBar(SnackBar(content: Text('Please add a Picture')));
       return;
     }
-    // if (key.currentState!.validate()){
 
     final String title = titleController.text;
     final String vendor = vendorController.text;
