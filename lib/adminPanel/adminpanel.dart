@@ -58,31 +58,31 @@ class _adminPanelState extends State<adminPanel> {
                                       ),
                                       const Text("Add new product",
                                           style:
-                                              TextStyle(fontWeight: FontWeight.w900, fontSize: 20)),
+                                              TextStyle(fontWeight: FontWeight.w900, fontSize: 20, color: Colors.green)),
                                       TextField(
                                         controller: titleController,
-                                        decoration: const InputDecoration(labelText: 'TITLE'),
+                                        decoration: const InputDecoration(labelText: 'TITLE', labelStyle: textStylesBase.textfieldA,),
                                       ),
                                       TextField(
                                         controller: vendorController,
-                                        decoration: const InputDecoration(labelText: 'VENDOR'),
+                                        decoration: const InputDecoration(labelText: 'VENDOR', labelStyle: textStylesBase.textfieldA),
                                       ),
                                       TextField(
                                         controller: vendorLocationController,
                                         decoration:
-                                            const InputDecoration(labelText: 'VENDOR LOCATION'),
+                                            const InputDecoration(labelText: 'VENDOR LOCATION', labelStyle: textStylesBase.textfieldA),
                                       ),
                                       TextField(
                                         keyboardType:
                                             const TextInputType.numberWithOptions(decimal: true),
                                         controller: priceController,
-                                        decoration: const InputDecoration(labelText: 'PRICE'),
+                                        decoration: const InputDecoration(labelText: 'PRICE', labelStyle: textStylesBase.textfieldA),
                                       ),
                                       TextField(
                                         keyboardType:
                                             const TextInputType.numberWithOptions(decimal: true),
                                         controller: sizeController,
-                                        decoration: const InputDecoration(labelText: 'SIZE'),
+                                        decoration: const InputDecoration(labelText: 'SIZE',labelStyle: textStylesBase.textfieldA),
                                       ),
                                       const SizedBox(
                                         height: 10,
@@ -119,27 +119,19 @@ class _adminPanelState extends State<adminPanel> {
                                               });
                                             },
                                         ),
-                                        // Container(
-                                        //   height: 20, width: 20,
-                                        //   child: cameraButtonPressed?
-                                        //   const CircularProgressIndicator():
-                                        //   const SizedBox(
-                                        //     height: 20,width: 20,
-                                        //     child: DecoratedBox(decoration: BoxDecoration(
-                                        //       color: Colors.amberAccent,
-                                        //     )),
-                                        //   )
-                                        // )
                                       ),
-                                  
-                                       
-                        
-                                      
-                                      const SizedBox(height: 10),
+
+                                      const SizedBox(height: 20,
+                                      child:  Text(
+                                        "picture should be of 1x1 in dimension and "
+                                      ),
+                                      ),
                                       ElevatedButton(
                                         onPressed: loadingStatus ? () => submitData() : null,
                                         child: const Text("Add product"),
                                       ),
+                                    
+                                      
                                     ],
                                   ),
                                 );
@@ -398,4 +390,8 @@ class _adminPanelState extends State<adminPanel> {
       Navigator.of(context).pop();
     }
   }
+}
+
+class textStylesBase{
+  static const textfieldA = TextStyle(color: Colors.green, fontStyle: FontStyle.italic);
 }
