@@ -120,12 +120,17 @@ class _adminPanelState extends State<adminPanel> {
                       height: 10,
                     ),
                     Container(
-                      child: cameraButtonPressed
+                      // modelsheetsetstate
+                      child
+                      : cameraButtonPressed
                           ? Text("image not loaded yet")
-                          : Text("thing is working"),
-                      //  Image.network("$imageUrl"),
-                      height: 30,
-                      width: 30,
+                          : 
+                          Image.network(
+                            imageUrl,
+                            fit: BoxFit.cover,),
+                      height: 150,
+                      width: 150,
+                      
                     ),
                     const SizedBox(
                       height: 10,
@@ -331,7 +336,7 @@ class _adminPanelState extends State<adminPanel> {
           setState(() {
             cameraButtonPressed = false;
             loadingStatus = true;
-            print("working");
+            print("$imageUrl");
           });
         }
         // return ;
