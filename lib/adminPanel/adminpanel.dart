@@ -97,16 +97,7 @@ class _adminPanelState extends State<adminPanel> {
                           ? const CircularProgressIndicator(
                               strokeWidth: 6,
                             )
-                          :
-                          // const SizedBox(
-                          //   height: 20,width: 20,
-                          //   child: DecoratedBox(decoration: BoxDecoration(
-                          //     color: Colors.amberAccent,
-                          //   )
-                          //   ),
-                          // )
-
-                          IconButton(
+                          : IconButton(
                               icon: const Icon(Icons.camera_alt, size: 30),
                               onPressed: () async {
                                 ModalSheetSetState(() {
@@ -129,11 +120,14 @@ class _adminPanelState extends State<adminPanel> {
                       height: 10,
                     ),
                     Container(
-                      child: Image?.network(imageUrl),
+                      child: cameraButtonPressed
+                          ? Text("image not loaded yet")
+                          : Text("thing is working"),
+                      //  Image.network("$imageUrl"),
                       height: 30,
                       width: 30,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
 
