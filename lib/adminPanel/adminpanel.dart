@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ class _adminPanelState extends State<adminPanel> {
   final TextEditingController sizeController = TextEditingController();
 
   String imageUrl = '';
+  bool imageReady = false;
   bool cameraButtonPressed = false;
 
   bool loadingStatus = false;
@@ -120,7 +122,8 @@ class _adminPanelState extends State<adminPanel> {
                       height: 10,
                     ),
                     Container(
-                      child: imageDisplay(),
+                      child: 
+                     
                       // modelsheetsetstate
                       // child: cameraButtonPressed
                       //     ? Text("image not loaded yet")
@@ -335,6 +338,7 @@ class _adminPanelState extends State<adminPanel> {
           setState(() {
             cameraButtonPressed = false;
             loadingStatus = true;
+            imageReady = true;
             print("$imageUrl");
           });
         }
@@ -385,6 +389,19 @@ class _adminPanelState extends State<adminPanel> {
       Navigator.of(context).pop();
     }
   }
+
+//   imageDisplay(){
+//   if(imageReady = true){
+//   Container(  
+//   height: 150,
+//   width: 150,
+//   child: Image.network(imageUrl),
+  
+//   );
+
+//   }
+// }
+
 }
 
 class textStylesBase {
@@ -392,8 +409,3 @@ class textStylesBase {
       TextStyle(color: Colors.green, fontStyle: FontStyle.italic);
 }
 
-imageDisplay(){
-  Container(
-    
-  )
-}
