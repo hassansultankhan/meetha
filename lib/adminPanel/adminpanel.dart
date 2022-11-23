@@ -120,17 +120,16 @@ class _adminPanelState extends State<adminPanel> {
                       height: 10,
                     ),
                     Container(
+                      child: imageDisplay(),
                       // modelsheetsetstate
-                      child
-                      : cameraButtonPressed
-                          ? Text("image not loaded yet")
-                          : 
-                          Image.network(
-                            imageUrl,
-                            fit: BoxFit.cover,),
-                      height: 150,
-                      width: 150,
-                      
+                      // child: cameraButtonPressed
+                      //     ? Text("image not loaded yet")
+                      //     : Image.network(
+                      //         imageUrl,
+                      //         fit: BoxFit.cover,
+                      //       ),
+                      // height: 150,
+                      // width: 150,
                     ),
                     const SizedBox(
                       height: 10,
@@ -391,4 +390,10 @@ class _adminPanelState extends State<adminPanel> {
 class textStylesBase {
   static const textfieldA =
       TextStyle(color: Colors.green, fontStyle: FontStyle.italic);
+}
+
+imageDisplay(){
+  Container(
+    
+  )
 }
