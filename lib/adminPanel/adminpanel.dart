@@ -118,22 +118,39 @@ class _adminPanelState extends State<adminPanel> {
                       height: 20,
                       child: Text("picture should be of 1x1 in dimension and "),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
+                    
                     Container(
-                      child: 
-                     
-                      // modelsheetsetstate
-                      // child: cameraButtonPressed
-                      //     ? Text("image not loaded yet")
-                      //     : Image.network(
-                      //         imageUrl,
-                      //         fit: BoxFit.cover,
-                      //       ),
-                      // height: 150,
-                      // width: 150,
+                      child: LayoutBuilder(builder: (context, constraints){
+                        if(imageReady =true){
+                        return imageDisplay();}
+                        else{
+                          return Text("data");
+                        }
+                        // ModalSheetSetState(){
+                        // // imageReady=true;
+                        // // return Image.network(imageUrl,
+                        // //     fit: BoxFit.cover,
+                        // //     height: 150,
+                        // //     width: 150,
+                        // //   );
+                        // }
+                      }
+                      ),
                     ),
+                      
+                      
+                    //   //  imageReady
+                    //   //     ? const Text("image not loaded yet")
+                    //   //     : Image.network(
+                    //   //         imageUrl,
+                    //   //         fit: BoxFit.cover,
+                    //   //       ),
+                    //   // height: 150,
+                    //   // width: 150,
+                    // ),
                     const SizedBox(
                       height: 10,
                     ),
@@ -390,17 +407,17 @@ class _adminPanelState extends State<adminPanel> {
     }
   }
 
-//   imageDisplay(){
-//   if(imageReady = true){
-//   Container(  
-//   height: 150,
-//   width: 150,
-//   child: Image.network(imageUrl),
+  imageDisplay(){
+  if(imageReady = true){
+  Container(  
+  height: 150,
+  width: 150,
+  child: Image?.network(imageUrl),
   
-//   );
+  );
 
-//   }
-// }
+  }
+  }
 
 }
 
