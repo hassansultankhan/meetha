@@ -44,8 +44,12 @@ class _adminPanelState extends State<adminPanel> {
                     left: 20,
                     right: 20,
                     bottom: MediaQuery.of(ctx).viewInsets.bottom),
-                child: Column(
+                child: 
+                // Expanded(child: 
+                Column(
                   mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+
                   children: [
                     const SizedBox(
                       height: 20,
@@ -127,7 +131,12 @@ class _adminPanelState extends State<adminPanel> {
                     Container(
                       child: LayoutBuilder(builder: (context, constraints) {
                         if (imageReady = true) {
-                          return imageDisplay();
+                          // BoxDecoration(
+                          //   image: DecorationImage(image: AssetImage('assets/no_image'))
+                          // );
+                          print('working');
+                          return Text ("something");
+                          // return imageDisplay();
                         } else {
                           return Text("data");
                         }
@@ -161,6 +170,7 @@ class _adminPanelState extends State<adminPanel> {
                     ),
                   ],
                 ),
+              // ),
               );
             },
           );
@@ -409,11 +419,17 @@ class _adminPanelState extends State<adminPanel> {
 
   imageDisplay() {
     if (imageReady = true) {
-      Container(
+       Container(
         height: 150,
         width: 150,
+        decoration: const BoxDecoration(
+          image: DecorationImage(image: AssetImage('assets/no_image.jpg'),
+          fit: BoxFit.fitWidth,
+          ),
+        )
         // child: Image.network(imageUrl, fit: BoxFit.scaleDown,),
       );
+     
     }
   }
 }
