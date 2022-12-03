@@ -22,8 +22,7 @@ class _adminPanelState extends State<adminPanel> {
   final TextEditingController sizeController = TextEditingController();
 
   // String imageUrl = '';
-  String imageUrl =
-      "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBhUIBwgWFhUWFR0ZFxUYFxkaHhUWFx0WGRoaFhUZHSggJB8nIBUVJTEnJikrLi8uGB8zODMsNygtLisBCgoKDQ0NFQwNFS0dFRkrKysrKysrLSsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIAOEA4QMBIgACEQEDEQH/xAAbAAEBAAIDAQAAAAAAAAAAAAAABAIFAQMGB//EADgQAQACAQIBBwoEBgMAAAAAAAABAgMEEQUSITFBUWFxExQiMlJygZGxwTRCodEGMzVTYoIVIyT/xAAVAQEBAAAAAAAAAAAAAAAAAAAAAf/EABURAQEAAAAAAAAAAAAAAAAAAAAR/9oADAMBAAIRAxEAPwD7iAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADV6rV+X1XmuLJyY32m/bPs1ntBTn1+HFfydYm1vZrz/AD7GHluIZPU01a+9b9lGm0+LT05GGm338ZdwIfKcRpz2w0nwtMfVzTiOOL8jU45pP+XRPhZbswyY6ZKci9d4nqkGUTvG8OWtmL8MtvEzOKemOunfv2NjWYtG8SDkAAAAAAAAAAAAAAAAAAAAAEvEc1sWn2x+taeTXxkrocPmnm0xzdvXv279rr1H/ZxPHSeqJt8ej7rQQ6fPk0+XzbVz7l/ajsnvXvP/AMRZcnnEYotzcmJ2795/ZFh1WqyW5M6uax2zM7CV61jTJS8b0tE+DzOXLq64/K4tbNojp2mYmPGJdmhzTj4hTHh1M2rb1ubaN+vm+Ec4V6K9a3rNbRzSj4dM4cltHefV56+7PR8lqLP6HFMdo/NW0T8I3FXAAAAAAAAAAAAAAAAAAAAAAhz+hxXHaeutq/f7LYScTx2tgjLjj0qTyo+HTHyUYctM2KMuOeaY3gGg/iL8bHuR9ZSabkZdNbTTeImZi0TPRO28bb/F6TVaDT6q0WzU3mO/Z0/8Nov7c/ORI0Mb6Wl6ZOm1YiNpiY6Ymd5g4X/UaeLfTwbRTH8ufnKXR6XBotXGPPTn39C/VPdMdoRukOp9LieKsdUWn9NlsztHOh0P/o1N9X1erXwjpn4yKvgAAAAAAAAAAAAAAAAAAAAACWtmLcOyzatZnFad5iPyT1z4Nk4mNwY48lMlIvjtvE9cM0N9ByLcvR5ZpPXHTWf9Tl8Rx+thpbvi236SC51anDjz4Zx5Y5vp37pvLcQtzRpax3zbf6OPMsuf8bqN49ivNHx65BLhtqdXE6SuTekTtOSPzV7I723x0rjpFKRtEFKVx15NK7RHVDIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH/9k=";
+  String imageUrl ="";
   bool imageReady = false;
   bool cameraButtonPressed = false;
 
@@ -99,6 +98,7 @@ class _adminPanelState extends State<adminPanel> {
                     ),
                     // Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Container(
+                   
                       height: 50,
                       width: 50,
                       child: cameraButtonPressed
@@ -114,6 +114,7 @@ class _adminPanelState extends State<adminPanel> {
                                 await _ImageLoad();
                                 ModalSheetSetState(() {
                                   cameraButtonPressed = false;
+                                  imageReady =true;
                                   loadingStatus = true;
                                 });
                               },
@@ -122,44 +123,27 @@ class _adminPanelState extends State<adminPanel> {
 
                     const SizedBox(
                       height: 20,
-                      child: Text("picture should be of 1x1 in dimension and "),
+                      child: Text("picture should be of 1x1 in scale ratio"),
                     ),
                     const SizedBox(
                       height: 10,
                     ),
 
                     Container(
-                      child: LayoutBuilder(builder: (context, constraints) {
-                        if (imageReady = true) {
-                          // BoxDecoration(
-                          //   image: DecorationImage(image: AssetImage('assets/no_image'))
-                          // );
-                          print('working');
-                          return Text ("something");
-                          // return imageDisplay();
-                        } else {
-                          return Text("data");
-                        }
-                        // ModalSheetSetState(){
-                        // // imageReady=true;
-                        // // return Image.network(imageUrl,
-                        // //     fit: BoxFit.cover,
-                        // //     height: 150,
-                        // //     width: 150,
-                        // //   );
-                        // }
-                      }),
+                      height: 150,
+                      width: 150,
+                      child:                      
+                       imageReady
+                          ? 
+                          Image.network(
+                              imageUrl,
+                              fit: BoxFit.scaleDown,
+                            )
+                            :
+                            Image.asset("assets/no_image.jpg",
+                            fit: BoxFit.contain,
+                            ),
                     ),
-
-                    //   //  imageReady
-                    //   //     ? const Text("image not loaded yet")
-                    //   //     : Image.network(
-                    //   //         imageUrl,
-                    //   //         fit: BoxFit.cover,
-                    //   //       ),
-                    //   // height: 150,
-                    //   // width: 150,
-                    // ),
                     const SizedBox(
                       height: 10,
                     ),
@@ -365,7 +349,7 @@ class _adminPanelState extends State<adminPanel> {
           setState(() {
             cameraButtonPressed = false;
             loadingStatus = true;
-            imageReady = true;
+            // imageReady = true;
             print("$imageUrl");
           });
         }
