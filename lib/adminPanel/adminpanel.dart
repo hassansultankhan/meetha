@@ -96,7 +96,7 @@ class _adminPanelState extends State<adminPanel> {
                     const SizedBox(
                       height: 10,
                     ),
-                    // Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    
                     Container(
                    
                       height: 50,
@@ -254,6 +254,7 @@ class _adminPanelState extends State<adminPanel> {
   Future<void> _delete(String productid) async {
     await _products.doc(productid).delete();
 
+
     ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text("product delelted")));
   }
@@ -317,22 +318,18 @@ class _adminPanelState extends State<adminPanel> {
   }
 
 //function to load image on storage
-  // Future<bool>
+ 
   _ImageLoad() async {
     WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
     // to remove focus from text field
     ImagePicker imagePicker = ImagePicker();
     XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
     print('$file?.path');
-    // setState(() {
-    //   cameraButtonPressed = true;
-    // });
 
     if (file == null) {
       setState(() {
         loadingStatus = false;
       });
-      // return loadingStatus;
     } else {
       // String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
       //not used
@@ -398,22 +395,6 @@ class _adminPanelState extends State<adminPanel> {
       imageUrl = "";
 
       Navigator.of(context).pop();
-    }
-  }
-
-  imageDisplay() {
-    if (imageReady = true) {
-       Container(
-        height: 150,
-        width: 150,
-        decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/no_image.jpg'),
-          fit: BoxFit.fitWidth,
-          ),
-        )
-        // child: Image.network(imageUrl, fit: BoxFit.scaleDown,),
-      );
-     
     }
   }
 }
