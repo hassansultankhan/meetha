@@ -1,6 +1,5 @@
-import 'dart:ffi';
-import 'dart:io';
 
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
@@ -42,7 +41,7 @@ class _adminPanelState extends State<adminPanel> {
                     top: 20,
                     left: 20,
                     right: 20,
-                    bottom: MediaQuery.of(ctx).viewInsets.bottom),
+                    bottom: MediaQuery.of(ctx).viewInsets.top),
                 child: 
                 // Expanded(child: 
                 Column(
