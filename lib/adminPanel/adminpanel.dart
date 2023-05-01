@@ -323,6 +323,7 @@ class _adminPanelState extends State<adminPanel> {
     // to remove focus from text field
     ImagePicker imagePicker = ImagePicker();
     XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
+    // pick an image from gallery of Android mobile
     print('$file?.path');
 
     if (file == null) {
@@ -330,17 +331,18 @@ class _adminPanelState extends State<adminPanel> {
         loadingStatus = false;
       });
     } else {
-      // String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+      //String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
       //not used
 
       Reference referenceRoot = FirebaseStorage.instance.ref();
       Reference referenceDir = referenceRoot.child('images');
       Reference referenceImage2Upload =
           referenceDir.child('${titleController.text}');
+      //Set a reference path to child directory of forebase storage.
 
       try {
-        await referenceImage2Upload.putFile(File(file.path));
-        imageUrl = await referenceImage2Upload.getDownloadURL();
+        await referenceImage2Upload.putFile(File(file.path));// upload file to reference path
+        imageUrl = await referenceImage2Upload.getDownloadURL();// extract image URL of uploaded file
         if (imageUrl != null) {
           setState(() {
             cameraButtonPressed = false;
